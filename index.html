@@ -37,6 +37,21 @@
     .nav-links a:hover { color: var(--white); }
     .nav-links a.active { color: var(--purple2); }
 
+    /* HAMBURGER */
+    .nav-toggle {
+      display: none; flex-direction: column; justify-content: space-between;
+      width: 26px; height: 18px; cursor: pointer; z-index: 200;
+      background: none; border: none; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; height: 2px; width: 100%;
+      background: var(--white); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-open .nav-toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    .nav-open .nav-toggle span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
     /* HERO */
     .hero {
       min-height: 100vh; display: flex; align-items: center;
@@ -200,10 +215,25 @@
       .stat-grid { grid-template-columns: 1fr 1fr; }
       .hero-windmill-img { display: none; }
     }
+    @media (max-width: 700px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: flex; flex-direction: column; align-items: center;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(12,12,18,0.97); backdrop-filter: blur(16px);
+        justify-content: center; gap: 2rem; z-index: 100;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .nav-open .nav-links { opacity: 1; pointer-events: all; }
+      .nav-links a { font-size: 1.1rem; letter-spacing: 0.1em; }
+    }
     @media (max-width: 560px) {
       .feature-cards, .stat-grid { grid-template-columns: 1fr; }
-      .nav-links { gap: 1.2rem; }
       .hero-btns { flex-direction: column; }
+      .chimney-badge { right: 0; bottom: -1.5rem; }
+      footer { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+      footer .foot-links { flex-wrap: wrap; gap: 1rem; }
     }
   </style>
 </head>
@@ -211,6 +241,9 @@
 
   <nav>
     <div class="nav-logo">Tulip<span>Windmill</span></div>
+    <button class="nav-toggle" aria-label="Menu openen">
+      <span></span><span></span><span></span>
+    </button>
     <ul class="nav-links">
       <li><a href="index.html" class="active">Main</a></li>
       <li><a href="technology.html">Our Technology</a></li>
@@ -372,6 +405,14 @@
       });
     }, { threshold: 0.12 });
     reveals.forEach(el => observer.observe(el));
+
+    // Hamburger menu
+    const toggle = document.querySelector(".nav-toggle");
+    const body = document.body;
+    toggle.addEventListener("click", () => body.classList.toggle("nav-open"));
+    document.querySelectorAll(".nav-links a").forEach(a =>
+      a.addEventListener("click", () => body.classList.remove("nav-open"))
+    );
   </script>
 </body>
 </html>
