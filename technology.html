@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Technology — TulipWindmill</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧲</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white:   #F7F7F9;
+      --grey:    #B8B9C3;
+      --mid:     #3D3D4E;
+      --dark:    #12121A;
+      --purple:  #6C4EE0;
+      --purple2: #9B7FFF;
+      --accent:  #C8B8FF;
+      --glow:    rgba(108,78,224,0.35);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--white); font-family: "DM Sans", sans-serif; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(18,18,26,0.80);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(108,78,224,0.18);
+    }
+    .nav-logo { font-family: "Playfair Display", serif; font-size: 1.45rem; font-weight: 900; letter-spacing: -0.5px; }
+    .nav-logo span { color: var(--purple2); }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a { font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); text-decoration: none; transition: color 0.25s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--purple2); }
+
+    .nav-toggle {
+      display: none; flex-direction: column; justify-content: space-between;
+      width: 26px; height: 18px; cursor: pointer; z-index: 200;
+      background: none; border: none; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; height: 2px; width: 100%;
+      background: var(--white); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-open .nav-toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    .nav-open .nav-toggle span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 10rem 5vw 6rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 20% 50%, rgba(108,78,224,0.22) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 50% at 85% 30%, rgba(155,127,255,0.12) 0%, transparent 60%),
+                  linear-gradient(160deg, #12121A 0%, #1C1B2E 55%, #12121A 100%);
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(108,78,224,0.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(108,78,224,0.06) 1px, transparent 1px);
+      background-size: 48px 48px; pointer-events: none;
+    }
+    .hero-diagram {
+      position: absolute; right: 5vw; top: 50%; transform: translateY(-50%);
+      width: min(42vw, 480px); z-index: 1;
+      animation: floatY 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 40px rgba(108,78,224,0.4));
+    }
+    @keyframes floatY {
+      0%,100% { transform: translateY(-50%) translateY(0); }
+      50%      { transform: translateY(-50%) translateY(-18px); }
+    }
+    .hero-content { position: relative; max-width: 560px; z-index: 2; }
+    .hero-tag {
+      display: inline-block; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--purple2); border: 1px solid rgba(155,127,255,0.35);
+      border-radius: 2rem; padding: 0.35rem 1rem; margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero h1 {
+      font-family: "Playfair Display", serif; font-size: clamp(2.6rem, 5vw, 4.2rem);
+      line-height: 1.1; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 1.6rem;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+    .hero h1 em { font-style: normal; color: var(--purple2); }
+    .hero p {
+      font-size: 1.08rem; line-height: 1.75; color: var(--grey);
+      max-width: 520px; margin-bottom: 2.6rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 1s 0.35s ease both; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 2rem; border-radius: 6px; font-size: 0.9rem; font-weight: 500;
+      text-decoration: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .btn-primary { background: var(--purple); color: #fff; box-shadow: 0 0 24px var(--glow); border: none; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 32px var(--glow); }
+    .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+    .btn-outline:hover { border-color: var(--purple2); color: var(--purple2); transform: translateY(-2px); }
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--grey); opacity: 0.5; animation: fadeUp 1.2s 0.6s ease both;
+    }
+    .scroll-hint .bar { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--grey), transparent); animation: scrollBar 2s ease-in-out infinite; }
+    @keyframes scrollBar { 0%,100% { transform: scaleY(1); opacity:0.5; } 50% { transform:scaleY(0.4); opacity:0.2; } }
+
+    /* SECTIONS */
+    section { padding: 7rem 5vw; }
+    .section-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--purple2); margin-bottom: 1rem; }
+    .section-title { font-family: "Playfair Display", serif; font-size: clamp(1.9rem, 3.5vw, 2.9rem); font-weight: 900; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 1.4rem; }
+    .divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--purple), var(--purple2)); border-radius: 2px; margin-bottom: 2rem; }
+
+    /* PROBLEM */
+    .problem { background: linear-gradient(160deg, #1a1928 0%, #12121A 100%); }
+    .problem-inner { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .problem-text p { font-size: 1.05rem; line-height: 1.8; color: var(--grey); margin-bottom: 1.2rem; }
+    .problem-text p strong { color: var(--white); }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .stat-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(108,78,224,0.2);
+      border-radius: 12px; padding: 1.8rem 1.4rem; transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { border-color: var(--purple2); transform: translateY(-4px); }
+    .stat-card .num { font-family: "Playfair Display", serif; font-size: 2.6rem; font-weight: 900; color: var(--purple2); line-height: 1; margin-bottom: 0.4rem; }
+    .stat-card .label { font-size: 0.82rem; color: var(--grey); line-height: 1.4; }
+
+    /* SOLUTION FEATURES */
+    .solution { background: var(--dark); }
+    .solution-inner { max-width: 1160px; margin: 0 auto; }
+    .solution-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem; align-items: end; }
+    .solution-header p { font-size: 1.05rem; line-height: 1.8; color: var(--grey); }
+    .solution-header p strong { color: var(--white); }
+    .feature-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .feature-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(108,78,224,0.05) 100%);
+      border: 1px solid rgba(108,78,224,0.18); border-radius: 14px; padding: 2.2rem 1.8rem;
+      position: relative; overflow: hidden; transition: transform 0.3s, border-color 0.3s;
+    }
+    .feature-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--purple), transparent); opacity: 0; transition: opacity 0.3s; }
+    .feature-card:hover { transform: translateY(-6px); border-color: rgba(108,78,224,0.45); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon { width: 48px; height: 48px; background: rgba(108,78,224,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.4rem; }
+    .feature-card h3 { font-family: "Playfair Display", serif; font-size: 1.18rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .feature-card p { font-size: 0.9rem; line-height: 1.7; color: var(--grey); }
+
+    /* MAGNET DETAIL */
+    .magnet-detail { background: linear-gradient(160deg, #1a1928 0%, #12121A 100%); }
+    .magnet-inner { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .magnet-text p { font-size: 1.05rem; line-height: 1.8; color: var(--grey); margin-bottom: 1.2rem; }
+    .magnet-text p strong { color: var(--white); }
+    .spec-list { list-style: none; margin-top: 2rem; }
+    .spec-list li {
+      display: flex; justify-content: space-between;
+      padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.88rem;
+    }
+    .spec-list li:last-child { border-bottom: none; }
+    .spec-key { color: var(--grey); }
+    .spec-val { color: var(--purple2); font-weight: 500; }
+    .earnshaw-note {
+      margin-top: 2rem; padding: 1.4rem 1.6rem;
+      background: rgba(108,78,224,0.08); border-left: 3px solid var(--purple2);
+      border-radius: 0 8px 8px 0;
+    }
+    .earnshaw-note p { font-size: 0.88rem; color: var(--grey); line-height: 1.7; margin: 0; }
+    .earnshaw-note strong { color: var(--accent); }
+
+    /* PERFORMANCE */
+    .performance { background: var(--dark); }
+    .perf-inner { max-width: 1160px; margin: 0 auto; }
+    .perf-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; margin-top: 3rem; }
+    .perf-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(108,78,224,0.2);
+      border-radius: 12px; padding: 1.8rem 1.2rem; text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .perf-card:hover { border-color: var(--purple2); transform: translateY(-4px); }
+    .perf-card .big { font-family: "Playfair Display", serif; font-size: 2.2rem; font-weight: 900; color: var(--purple2); line-height: 1; margin-bottom: 0.5rem; }
+    .perf-card .perf-label { font-size: 0.8rem; color: var(--grey); line-height: 1.4; }
+
+    /* CTA */
+    .cta-section { background: var(--dark); text-align: center; padding: 8rem 5vw; position: relative; overflow: hidden; }
+    .cta-section::before { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(108,78,224,0.18) 0%, transparent 70%); pointer-events: none; }
+    .cta-section h2 { font-family: "Playfair Display", serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; margin-bottom: 1.2rem; position: relative; }
+    .cta-section p { font-size: 1.05rem; color: var(--grey); max-width: 540px; margin: 0 auto 2.5rem; line-height: 1.75; position: relative; }
+
+    footer {
+      background: #0C0C12; border-top: 1px solid rgba(108,78,224,0.15);
+      padding: 2.5rem 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer .logo { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 900; }
+    footer .logo span { color: var(--purple2); }
+    footer .copy { font-size: 0.8rem; color: var(--mid); }
+    footer .foot-links { display: flex; gap: 2rem; list-style: none; }
+    footer .foot-links a { font-size: 0.8rem; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+    footer .foot-links a:hover { color: var(--white); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .problem-inner, .solution-header, .magnet-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .feature-cards { grid-template-columns: 1fr 1fr; }
+      .perf-grid { grid-template-columns: 1fr 1fr; }
+      .hero-diagram { display: none; }
+    }
+    @media (max-width: 700px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: flex; flex-direction: column; align-items: center;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(12,12,18,0.97); backdrop-filter: blur(16px);
+        justify-content: center; gap: 2rem; z-index: 100;
+        opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      }
+      .nav-open .nav-links { opacity: 1; pointer-events: all; }
+      .nav-links a { font-size: 1.1rem; letter-spacing: 0.1em; }
+    }
+    @media (max-width: 560px) {
+      .feature-cards, .stat-grid, .perf-grid { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; }
+      footer { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+      footer .foot-links { flex-wrap: wrap; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">Tulip<span>Windmill</span></div>
+    <button class="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Main</a></li>
+      <li><a href="technology.html" class="active">Our Technology</a></li>
+      <li><a href="development.html">Development</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <svg class="hero-diagram" viewBox="0 0 460 540" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="gp" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#9B7FFF" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#9B7FFF" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="b6"><feGaussianBlur stdDeviation="6"/></filter>
+        <linearGradient id="sg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#252538"/>
+          <stop offset="50%" stop-color="#363650"/>
+          <stop offset="100%" stop-color="#252538"/>
+        </linearGradient>
+        <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8870F0"/>
+          <stop offset="100%" stop-color="#4A38B0"/>
+        </linearGradient>
+        <linearGradient id="mb" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4A38B0"/>
+          <stop offset="100%" stop-color="#8870F0"/>
+        </linearGradient>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="rgba(155,127,255,0.3)"/>
+        </marker>
+      </defs>
+
+      <!-- card bg -->
+      <rect x="8" y="8" width="444" height="524" rx="22" fill="#16161f" stroke="rgba(108,78,224,0.14)" stroke-width="1"/>
+
+      <!-- label top -->
+      <text x="230" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#B8B9C3" letter-spacing="2">MAGNETIC LEVITATION SYSTEM</text>
+
+      <!-- shaft -->
+      <rect x="215" y="70" width="30" height="370" rx="15" fill="url(#sg)"/>
+
+      <!-- rotor blades area -->
+      <rect x="52" y="80" width="356" height="148" rx="12" fill="#15151e" stroke="rgba(108,78,224,0.16)" stroke-width="1"/>
+      <ellipse cx="130" cy="154" rx="30" ry="54" fill="none" stroke="#6C4EE0" stroke-width="2.2" transform="rotate(-20 130 154)" opacity="0.8"/>
+      <ellipse cx="230" cy="154" rx="30" ry="54" fill="none" stroke="#9B7FFF" stroke-width="2.2" opacity="0.8"/>
+      <ellipse cx="330" cy="154" rx="30" ry="54" fill="none" stroke="#6C4EE0" stroke-width="2.2" transform="rotate(20 330 154)" opacity="0.8"/>
+      <text x="230" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#9B7FFF" letter-spacing="1">CARBON HELIX BLADES</text>
+      <text x="230" y="222" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#B8B9C3">3 blades · 90° twist · dark purple</text>
+
+      <!-- ROTOR magnet -->
+      <ellipse cx="230" cy="278" rx="105" ry="20" fill="url(#gp)" filter="url(#b6)"/>
+      <rect x="100" y="260" width="260" height="36" rx="8" fill="#1a1025" stroke="#9B7FFF" stroke-width="1.4"/>
+      <rect x="107" y="263" width="50" height="30" rx="4" fill="url(#mt)" opacity="0.9"/>
+      <rect x="163" y="263" width="50" height="30" rx="4" fill="#6455C0" opacity="0.8"/>
+      <rect x="219" y="263" width="50" height="30" rx="4" fill="url(#mt)" opacity="0.9"/>
+      <rect x="275" y="263" width="50" height="30" rx="4" fill="#6455C0" opacity="0.8"/>
+      <text x="132" y="282" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">N</text>
+      <text x="188" y="282" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">S</text>
+      <text x="244" y="282" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">N</text>
+      <text x="300" y="282" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">S</text>
+      <text x="54" y="281" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#B8B9C3">Rotor</text>
+      <line x1="76" y1="278" x2="100" y2="275" stroke="#B8B9C3" stroke-width="0.8"/>
+
+      <!-- repulsion arrows -->
+      <g stroke="#C8B8FF" stroke-width="1.6" fill="none">
+        <line x1="132" y1="258" x2="132" y2="230"><animate attributeName="y2" values="230;220;230" dur="2s" repeatCount="indefinite"/></line>
+        <polygon points="132,225 128,236 136,236" fill="#C8B8FF" stroke="none"><animate attributeName="points" values="132,225 128,236 136,236;132,215 128,226 136,226;132,225 128,236 136,236" dur="2s" repeatCount="indefinite"/></polygon>
+        <line x1="230" y1="258" x2="230" y2="230"><animate attributeName="y2" values="230;220;230" dur="2s" begin="0.4s" repeatCount="indefinite"/></line>
+        <polygon points="230,225 226,236 234,236" fill="#C8B8FF" stroke="none"><animate attributeName="points" values="230,225 226,236 234,236;230,215 226,226 234,226;230,225 226,236 234,236" dur="2s" begin="0.4s" repeatCount="indefinite"/></polygon>
+        <line x1="300" y1="258" x2="300" y2="230"><animate attributeName="y2" values="230;220;230" dur="2s" begin="0.8s" repeatCount="indefinite"/></line>
+        <polygon points="300,225 296,236 304,236" fill="#C8B8FF" stroke="none"><animate attributeName="points" values="300,225 296,236 304,236;300,215 296,226 304,226;300,225 296,236 304,236" dur="2s" begin="0.8s" repeatCount="indefinite"/></polygon>
+      </g>
+      <text x="230" y="212" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#C8B8FF" font-style="italic">repulsion force</text>
+
+      <!-- gap indicator -->
+      <line x1="72" y1="298" x2="72" y2="328" stroke="#9B7FFF" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="66" y1="298" x2="78" y2="298" stroke="#9B7FFF" stroke-width="1"/>
+      <line x1="66" y1="328" x2="78" y2="328" stroke="#9B7FFF" stroke-width="1"/>
+      <text x="62" y="315" text-anchor="end" font-family="DM Sans" font-size="10" fill="#9B7FFF">2–4 mm</text>
+
+      <!-- STATOR magnet -->
+      <ellipse cx="230" cy="358" rx="105" ry="20" fill="url(#gp)" filter="url(#b6)"/>
+      <rect x="100" y="330" width="260" height="36" rx="8" fill="#1a1025" stroke="#6C4EE0" stroke-width="1.4"/>
+      <rect x="107" y="333" width="50" height="30" rx="4" fill="url(#mb)" opacity="0.9"/>
+      <rect x="163" y="333" width="50" height="30" rx="4" fill="#6455C0" opacity="0.8"/>
+      <rect x="219" y="333" width="50" height="30" rx="4" fill="url(#mb)" opacity="0.9"/>
+      <rect x="275" y="333" width="50" height="30" rx="4" fill="#6455C0" opacity="0.8"/>
+      <text x="132" y="352" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">N</text>
+      <text x="188" y="352" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">S</text>
+      <text x="244" y="352" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">N</text>
+      <text x="300" y="352" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#fff" font-weight="600">S</text>
+      <text x="54" y="351" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#B8B9C3">Stator</text>
+      <line x1="76" y1="348" x2="100" y2="345" stroke="#B8B9C3" stroke-width="0.8"/>
+
+      <!-- ball bearing -->
+      <rect x="188" y="374" width="84" height="20" rx="6" fill="#1e2030" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+      <rect x="194" y="378" width="72" height="12" rx="4" fill="#252545"/>
+      <circle cx="208" cy="384" r="4" fill="#35355a"/>
+      <circle cx="222" cy="384" r="4" fill="#35355a"/>
+      <circle cx="236" cy="384" r="4" fill="#35355a"/>
+      <circle cx="250" cy="384" r="4" fill="#35355a"/>
+      <circle cx="264" cy="384" r="4" fill="#35355a"/>
+      <text x="54" y="384" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#B8B9C3">Bearing</text>
+      <line x1="76" y1="382" x2="188" y2="383" stroke="#B8B9C3" stroke-width="0.8"/>
+
+      <!-- pulse dot -->
+      <circle cx="230" cy="314" r="5" fill="#C8B8FF" opacity="0.9">
+        <animate attributeName="r" values="5;9;5" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- gravity -->
+      <line x1="410" y1="120" x2="410" y2="180" stroke="rgba(155,127,255,0.2)" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="422" y="152" font-family="DM Sans" font-size="9" fill="rgba(155,127,255,0.3)">gravity</text>
+
+      <text x="230" y="516" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#454558" letter-spacing="1">Magnet N42–N52 · Ø60/Ø20 · 10 mm</text>
+    </svg>
+
+    <div class="hero-content">
+      <div class="hero-tag">🧲 Zero-Friction Engineering</div>
+      <h1>The rotor that<br/><em>floats</em> on<br/>magnetic force.</h1>
+      <p>At the heart of our turbine sits a passive bearing system that offloads up to 90 % of the rotor's weight — eliminating the friction that kills small wind turbines before the breeze even starts.</p>
+      <div class="hero-btns">
+        <a href="#howit" class="btn btn-primary">Explore the magnetics ↓</a>
+        <a href="contact.html" class="btn btn-outline">Talk to our team</a>
+      </div>
+    </div>
+    <div class="scroll-hint"><span>Scroll</span><div class="bar"></div></div>
+  </section>
+
+  <!-- THE FRICTION PROBLEM -->
+  <section class="problem">
+    <div class="problem-inner">
+      <div class="problem-text reveal">
+        <p class="section-label">The Root Challenge</p>
+        <h2 class="section-title">Friction is the enemy of small turbines</h2>
+        <div class="divider"></div>
+        <p>Conventional small vertical-axis turbines use standard ball bearings to support the rotor's full weight. At the low wind speeds found on urban rooftops, <strong>bearing friction consumes a disproportionate share of available torque.</strong> The turbine stalls — or never starts at all.</p>
+        <p>Our engineers traced the problem to its root: offload the axial load and friction drops to near zero, letting the turbine respond to the gentlest breeze. The solution was hiding in physics — <strong>Ring magnets placed in mutual repulsion.</strong></p>
+      </div>
+      <div class="stat-grid reveal">
+        <div class="stat-card"><div class="num">~0</div><div class="label">Effective axial friction — rotor floats on magnetic repulsion</div></div>
+        <div class="stat-card"><div class="num">90<span style="font-size:1.4rem">%</span></div><div class="label">Of rotor weight offloaded by the neodymium ring magnets</div></div>
+        <div class="stat-card"><div class="num">2.5<span style="font-size:1.4rem">m/s</span></div><div class="label">Start-up wind speed — far below conventional small turbines</div></div>
+        <div class="stat-card"><div class="num">N52</div><div class="label">Maximum-grade magnets for the highest field density per gram</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="solution" id="howit">
+    <div class="solution-inner">
+      <div class="solution-header reveal">
+        <div>
+          <p class="section-label">The Mechanism</p>
+          <h2 class="section-title">Three forces working as one</h2>
+          <div class="divider"></div>
+        </div>
+        <p>Our rotor combines <strong>passive magnetic levitation</strong>, aerodynamic <strong>Savonius drag</strong>, and <strong>Darrieus lift</strong> — each force reinforcing the others so the turbine spins in almost any breeze and loses virtually no energy to friction.</p>
+      </div>
+      <div class="feature-cards">
+        <div class="feature-card reveal">
+          <div class="feature-icon">🧲</div>
+          <h3>Magnet Repulsion</h3>
+          <p>Two ring magnets — one on the rotor, one on the fixed frame — face each other with the same magnetic pole. The repulsion force cushions the rotor axially without any mechanical contact.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🌀</div>
+          <h3>Savonius Starting Torque</h3>
+          <p>The inner concave face of each carbon blade captures wind by drag, providing instant torque at even the lowest wind speeds. The turbine is fully self-starting — no electronics, no kickstart motor needed.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">⚡</div>
+          <h3>Darrieus Aerodynamic Lift</h3>
+          <p>The outer leading edge forms a NACA-inspired airfoil. As wind flows across it, lift is generated — just like an aircraft wing. At higher speeds this effect takes over, dramatically boosting efficiency.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🔩</div>
+          <h3>Ceramic Stability Bearing</h3>
+          <p>Earnshaw's theorem means purely passive levitation is unstable. A single ceramic ball bearing — carrying only ~10 % of rotor weight — provides radial control without reintroducing meaningful friction.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🪶</div>
+          <h3>Carbon Fibre Blades</h3>
+          <p>The three helix blades are moulded from aerospace-grade carbon fibre and finished in deep purple — maximising stiffness while minimising rotational mass, so the magnetic system has less work to do.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🏭</div>
+          <h3>Chimney-Ready System</h3>
+          <p>The entire assembly mounts directly onto standard chimney stacks at up to 1.2 m height — no permits, no new foundations — accessing cleaner airflow above rooftop turbulence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAGNET SPECIFICATION -->
+  <section class="magnet-detail">
+    <div class="magnet-inner">
+      <div class="magnet-text reveal">
+        <p class="section-label">Engineering Detail</p>
+        <h2 class="section-title">The magnet specification</h2>
+        <div class="divider"></div>
+        <p>Every element of the magnet pair has been chosen to balance holding force, stability and long-term reliability. The carbon fibre rotor keeps total rotational mass low — which means <strong>smaller magnets, lower cost, and a lighter stator structure.</strong></p>
+        <p>The air gap between the rings is maintained at 2–4 mm. Within this range the repulsion force offloads the rotor while tolerating small manufacturing variations — critical for a product installed on a rooftop by a single technician.</p>
+        <ul class="spec-list">
+          <li><span class="spec-key">Magnet type</span><span class="spec-val">Magnet N42–N52</span></li>
+          <li><span class="spec-key">Form factor</span><span class="spec-val">Ring (axial orientation)</span></li>
+          <li><span class="spec-key">Operating air gap</span><span class="spec-val">2 – 4 mm</span></li>
+          <li><span class="spec-key">Target axial offload</span><span class="spec-val">~40 N</span></li>
+          <li><span class="spec-key">Residual bearing type</span><span class="spec-val">Ceramic ball, single point</span></li>
+        </ul>
+        <div class="earnshaw-note">
+          <p><strong>On Earnshaw's theorem:</strong> purely passive magnetic levitation creates an unstable equilibrium. Our design acknowledges this — the magnets carry the weight, the mechanical bearing provides radial stability. Both together produce a system that is simultaneously near-frictionless and robust.</p>
+        </div>
+      </div>
+      <div class="reveal" style="margin-top:2rem;">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">40<span style="font-size:1.4rem">N</span></div>
+            <div class="label">Target axial offload — enough to float a 4–5 kg rotor</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">2–4<span style="font-size:1.4rem">mm</span></div>
+            <div class="label">Air gap between rotor and stator magnet rings</div>
+          </div>
+          <div class="stat-card" style="grid-column:span 2;">
+            <div class="num">80<span style="font-size:1.4rem">%</span></div>
+            <div class="label">Reduction in axial bearing load versus a conventional small VAWT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE -->
+  <section class="performance">
+    <div class="perf-inner">
+      <div class="reveal">
+        <p class="section-label">Real-World Performance</p>
+        <h2 class="section-title">What the physics allows at rooftop scale</h2>
+        <div class="divider"></div>
+        <p style="color:var(--grey);font-size:1.05rem;max-width:680px;line-height:1.8;">
+          Small rooftop turbines are limited by swept area and available wind speed. Our design is honest about that — and optimised to extract every available watt from the conditions that actually exist on a Dutch rooftop, day and night, winter and summer.
+        </p>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-card reveal">
+          <div class="big">150–250<span style="font-size:1rem">W</span></div>
+          <div class="perf-label">Practical output at Beaufort 4 (~6.5 m/s) with H=1.2 m, D=0.8 m</div>
+        </div>
+        <div class="perf-card reveal">
+          <div class="big">250–500<span style="font-size:1rem">W</span></div>
+          <div class="perf-label">Output at same wind speed with wider D=1.0 m rotor</div>
+        </div>
+        <div class="perf-card reveal">
+          <div class="big">80–90<span style="font-size:1rem">%</span></div>
+          <div class="perf-label">Turbine efficiency — achievable with our hybrid profile</div>
+        </div>
+        <div class="perf-card reveal">
+          <div class="big">22/24h</div>
+          <div class="perf-label">Wind generating hours (avg per year western Europe))</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="reveal">Want to go deeper<br/>into the engineering?</h2>
+    <p class="reveal">Whether you are a housing corporation, researcher or municipality — we want to walk you through the full system. Let's build the next phase of the energy transition together.</p>
+    <a href="contact.html" class="btn btn-primary reveal">Contact our team →</a>
+  </section>
+
+  <footer>
+    <div class="logo">Tulip<span>Windmill</span></div>
+    <ul class="foot-links">
+      <li><a href="index.html">Main</a></li>
+      <li><a href="technology.html">Our Technology</a></li>
+      <li><a href="development.html">Development</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div class="copy">© 2025 TulipWindmill — TULIP NC</div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) setTimeout(() => e.target.classList.add("visible"), i * 80);
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    const toggle = document.querySelector(".nav-toggle");
+    const body = document.body;
+    toggle.addEventListener("click", () => body.classList.toggle("nav-open"));
+    document.querySelectorAll(".nav-links a").forEach(a =>
+      a.addEventListener("click", () => body.classList.remove("nav-open"))
+    );
+  </script>
+</body>
+</html>
